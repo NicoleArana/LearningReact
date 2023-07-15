@@ -4,7 +4,47 @@ import viteLogo from '/vite.svg'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const returnsConvenientArray = () => {
+    const blue = "blue"
+    const object = {
+      hello: "world"
+    }
+
+    return [1, object, blue]
+  }
+
+  const [one, object, blue] = returnsConvenientArray()
+  const {helo} = object
+
+  const [count, setCount] = useState(0) // This is returning something like [0, () => {}]
+  console.log("count", count)
+  // Destructuring objects
+
+  // This function may be a library function
+  // and it's code may not be easily accesible/
+  // understandable
+  const getCalculations = (a, b) => {
+    return {
+      sum: a+b,
+      diff: a-b,
+      prod: a*b,
+      div: a/b
+    }
+  }
+
+  // Just getting the sum property
+  const { div }  = getCalculations(1, 2)
+
+  // Aliasing to avoid name colisions
+  const { sum: sum1 } = getCalculations(1, 2)
+  const { sum: sum2 } = getCalculations(2, 3)
+
+  //Destructuring from an array
+  const getSumAndDiff = (a, b) => {
+    return [a+b, a-b]
+  }
+// names dont matter, position do
+  const [whatever1, whatever2] = getSumAndDiff(1, 2)
 
   return (
     <>
@@ -18,7 +58,7 @@ function App() {
       </div>
       <h1> Vite + React </h1>
       <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
+        <button onClick={() => setCount(count + 1)}>
           count is {count}
         </button>
         <p>
