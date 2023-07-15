@@ -1,75 +1,52 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState, createContext, useContext } from "react"
 
-function App() {
-  const returnsConvenientArray = () => {
-    const blue = "blue"
-    const object = {
-      hello: "world"
-    }
+const globalContext = createContext()
 
-    return [1, object, blue]
-  }
-
-  const [one, object, blue] = returnsConvenientArray()
-  const {helo} = object
-
-  const [count, setCount] = useState(0) // This is returning something like [0, () => {}]
-  console.log("count", count)
-  // Destructuring objects
-
-  // This function may be a library function
-  // and it's code may not be easily accesible/
-  // understandable
-  const getCalculations = (a, b) => {
-    return {
-      sum: a+b,
-      diff: a-b,
-      prod: a*b,
-      div: a/b
-    }
-  }
-
-  // Just getting the sum property
-  const { div }  = getCalculations(1, 2)
-
-  // Aliasing to avoid name colisions
-  const { sum: sum1 } = getCalculations(1, 2)
-  const { sum: sum2 } = getCalculations(2, 3)
-
-  //Destructuring from an array
-  const getSumAndDiff = (a, b) => {
-    return [a+b, a-b]
-  }
-// names dont matter, position do
-  const [whatever1, whatever2] = getSumAndDiff(1, 2)
+const App = () => {
+  const [mostrarImagen, setMostrarImagen] = useState(true)
 
   return (
-    <>
+    <globalContext.Provider value={[mostrarImagen, setMostrarImagen]}>
       <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+        {mostrarImagen == true && <img src="/lana.png" />}
+        <Hello mensajeSiTeAma="Te ama" mensajeSiNoTeAma="No te ama" />
       </div>
-      <h1> Vite + React </h1>
-      <div className="card">
-        <button onClick={() => setCount(count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    </globalContext.Provider>
   )
+} 
+
+export const Hello = ({ mensajeSiTeAma, mensajeSiNoTeAma}) => {
+  const [florecita, setFlorecita] = useState(true)
+  const [state, setter] = useContext(globalContext)
+
+  return (
+    <div>
+      <button onClick={() => setter(!state)}>{state == true ? "Desaparecer" : "Aparecer"} a lana</button>
+
+      <h1> Dale click a la florecita para ver si te quiere o no!</h1>
+
+      <img src={florecita == true ? "/happy_flower.png" : "/sad_flower.png"} onClick={() => setFlorecita(!florecita)} />
+
+      <p>{florecita == true ? mensajeSiTeAma : mensajeSiNoTeAma}</p>
+
+      {florecita == true && (
+        <>
+          <p>Eres el amor de mi vida</p>
+          <p>Eres el amor de mi vida</p>
+          <p>Eres el amor de mi vida</p>
+          <p>Eres el amor de mi vida</p>
+          <p>Eres el amor de mi vida</p>
+          <p>Eres el amor de mi vida</p>
+          <p>Eres el amor de mi vida</p>
+        </>
+      )}
+      
+    </div>
+  )
+}
+
+const Adios = () => {
+
 }
 
 export default App
